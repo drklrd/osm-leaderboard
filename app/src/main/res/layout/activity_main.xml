@@ -144,6 +144,7 @@
     </android.support.v7.widget.CardView>
 
     <ListView
+        android:padding="10dp"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

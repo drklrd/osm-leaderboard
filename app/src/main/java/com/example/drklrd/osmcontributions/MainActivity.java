@@ -4,11 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.drklrd.osmcontributions.models.ContributionsResponse;
 import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView roads;
     private TextView changesets;
     private ProgressBar progressBar;
+    private ListView hashtags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         roads = (TextView) findViewById(R.id.roads);
         changesets = (TextView) findViewById(R.id.changeset);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        hashtags = (ListView) findViewById(R.id.hashtags);
+
+        ArrayList<String> hashes= new ArrayList<String>();
+        hashes.add("New");
+
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
+        hashtags.setAdapter(adapter);
+
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
                         .baseUrl(BASE_URL)
