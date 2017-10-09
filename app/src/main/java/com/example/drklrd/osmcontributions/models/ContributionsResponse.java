@@ -12,6 +12,12 @@ public class ContributionsResponse {
     @SerializedName("total_building_count_add")
     private int totalBuildingCount;
 
+    @SerializedName("total_road_km_add")
+    private float totalRoad;
+
+    @SerializedName("changeset_count")
+    private int changeset;
+
 
     public int getTotalBuildingCount(){
         return totalBuildingCount;
@@ -19,6 +25,22 @@ public class ContributionsResponse {
 
     public void setTotalBuildingCount(int totalBuildingCount){
         this.totalBuildingCount = totalBuildingCount;
+    }
+
+    public float getTotalRoad(){
+        return totalRoad;
+    }
+
+    public void setTotalRoad(float totalRoad){
+        this.totalRoad = totalRoad;
+    }
+
+    public int getChangeset(){
+        return changeset;
+    }
+
+    public void setChangeset(int changeset){
+        this.changeset = changeset;
     }
 
 }
