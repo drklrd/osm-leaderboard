@@ -3,6 +3,8 @@ import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
+
 /**
  * Created by drklrd on 10/9/17.
  */
@@ -18,6 +20,8 @@ public class ContributionsResponse {
     @SerializedName("changeset_count")
     private int changeset;
 
+    @SerializedName("hashtags")
+    private Map<String,String> hashtags;
 
     public int getTotalBuildingCount(){
         return totalBuildingCount;
@@ -41,6 +45,14 @@ public class ContributionsResponse {
 
     public void setChangeset(int changeset){
         this.changeset = changeset;
+    }
+
+    public Map<String,String> getHashtags(){
+        return hashtags;
+    }
+
+    public void setHashtags(Map<String,String> hashtags){
+        this.hashtags = hashtags;
     }
 
 }

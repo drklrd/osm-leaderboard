@@ -12,7 +12,11 @@ import android.widget.TextView;
 import com.example.drklrd.osmcontributions.models.ContributionsResponse;
 import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         hashtags = (ListView) findViewById(R.id.hashtags);
 
-        ArrayList<String> hashes= new ArrayList<String>();
-        hashes.add("New");
+        final ArrayList<String> hashes= new ArrayList<String>();
+        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
 
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
-        hashtags.setAdapter(adapter);
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
@@ -68,6 +70,30 @@ public class MainActivity extends AppCompatActivity {
                 buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
                 roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
                 changesets.setText(String.valueOf(response.body().getChangeset()) );
+                JSONObject obj = new JSONObject(response.body().getHashtags());
+
+                Iterator<String> iter = obj.keys();
+                while(iter.hasNext()){
+                    String key = iter.next();
+                    try {
+                        Object value = obj.get(key);
+                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
+                    }
+                    catch(Exception e){
+                        Log.i("Error","Error");
+                    }
+                }
+
+                hashtags.setAdapter(adapter);
+
+//
+//
+//                try{
+//                    Log.i("WEL",String.valueOf(obj.getString("kll")));
+//                }
+//                catch (Exception e){
+//
+//                }
             }
 
             @Override
