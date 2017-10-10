@@ -2,6 +2,7 @@ package com.example.drklrd.osmcontributions;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView changesets;
     private ProgressBar progressBar;
     private ListView hashtags;
+    private SearchView searchbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,20 @@ public class MainActivity extends AppCompatActivity {
         changesets = (TextView) findViewById(R.id.changeset);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         hashtags = (ListView) findViewById(R.id.hashtags);
+        searchbar = (SearchView) findViewById(R.id.searchbar);
+
+        searchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.i("Submitted",s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
 
         final ArrayList<String> hashes= new ArrayList<String>();
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
@@ -85,15 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 hashtags.setAdapter(adapter);
-
-//
-//
-//                try{
-//                    Log.i("WEL",String.valueOf(obj.getString("kll")));
-//                }
-//                catch (Exception e){
-//
-//                }
             }
 
             @Override
@@ -101,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("NICE",String.valueOf(t));
             }
         });
-
-
     }
+
+
 }
