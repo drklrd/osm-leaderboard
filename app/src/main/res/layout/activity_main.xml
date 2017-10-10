@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.drklrd.osmcontributions.MainActivity">
 
+    
 
     <android.support.v7.widget.CardView
-        android:layout_width="357dp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
         android:layout_height="191dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,7 +19,7 @@
         android:layout_marginStart="8dp">
 
 
-        <android.support.constraint.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -130,6 +132,7 @@
                 android:layout_marginStart="232dp" />
 
             <ProgressBar
+
                 android:id="@+id/progressBar"
                 android:visibility="invisible"
                 android:layout_width="48dp"
@@ -140,14 +143,14 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginStart="153dp" />
 
-        </android.support.constraint.ConstraintLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
     <ListView
         android:padding="10dp"
-        android:layout_width="368dp"
-        android:layout_height="296dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="210dp"
         android:id="@+id/hashtags"
@@ -156,4 +159,4 @@
         android:layout_marginEnd="8dp" />
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
