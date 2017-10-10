@@ -11,13 +11,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.drklrd.osmcontributions.models.ContributionsResponse;
+import com.example.drklrd.osmcontributions.models.Leader;
+import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
 import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
+import com.example.drklrd.osmcontributions.rest.LeaderboardApiService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
     private ListView hashtags;
     private SearchView searchbar;
 
+    ArrayList<String> hashes= new ArrayList<String>();
+    ArrayAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
 
         buildings = (TextView) findViewById(R.id.buildings);
         roads = (TextView) findViewById(R.id.roads);
@@ -55,7 +63,42 @@ public class MainActivity extends AppCompatActivity {
         searchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.i("Submitted",s);
+                Retrofit retrofitleader = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
+                Call<LeaderboardResponse> callleader = leaderboardApiService.getLeaderboard();
+                progressBar.setVisibility(View.VISIBLE);
+                callleader.enqueue(new Callback<LeaderboardResponse>() {
+                    @Override
+                    public void onResponse(Call<LeaderboardResponse> call, Response<LeaderboardResponse> response) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        List<Leader> leaders = response.body().getLeaders();
+                        hashes.clear();
+                        int editscount = 0;
+                        int buildingscount = 0;
+                        float roadscount = (float) 0.0;
+                        for(int i =0 ; i< leaders.size(); i++){
+                            hashes.add( (i+1) + ". " + String.valueOf(leaders.get(i).getName()));
+                            editscount = editscount + leaders.get(i).getEdits();
+                            buildingscount = buildingscount + leaders.get(i).getBuildings();
+                            roadscount = roadscount + leaders.get(i).getRoads();
+                        }
+                        TextView textView1 = (TextView) findViewById(R.id.textView1);
+                        textView1.setText("Edits");
+                        changesets.setText(String.valueOf(editscount));
+                        roads.setText(String.format("%.2f",(roadscount)) + "km");
+                        buildings.setText(String.valueOf(buildingscount));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<LeaderboardResponse> call, Throwable t) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
                 return false;
             }
 
@@ -64,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        final ArrayList<String> hashes= new ArrayList<String>();
-        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
-
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
@@ -107,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ContributionsResponse> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Log.i("NICE",String.valueOf(t));
             }
         });
