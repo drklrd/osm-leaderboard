@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
                 LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
-                Call<LeaderboardResponse> callleader = leaderboardApiService.getLeaderboard();
+                Call<LeaderboardResponse> callleader = leaderboardApiService.getLeaderboard(s);
                 progressBar.setVisibility(View.VISIBLE);
                 callleader.enqueue(new Callback<LeaderboardResponse>() {
                     @Override
