@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         int buildingscount = 0;
                         float roadscount = (float) 0.0;
                         for(int i =0 ; i< leaders.size(); i++){
-                            hashes.add( (i+1) + ". " + String.valueOf(leaders.get(i).getName()));
+                            hashes.add( (i+1) + ". " + String.valueOf(leaders.get(i).getName()) + " : " + String.valueOf(leaders.get(i).getEdits()) + " edits");
                             editscount = editscount + leaders.get(i).getEdits();
                             buildingscount = buildingscount + leaders.get(i).getBuildings();
                             roadscount = roadscount + leaders.get(i).getRoads();
