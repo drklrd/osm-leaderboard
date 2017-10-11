@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.drklrd.osmcontributions.models.ContributionsResponse;
+import com.example.drklrd.osmcontributions.models.HashtagsResponse;
 import com.example.drklrd.osmcontributions.models.Leader;
 import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
 import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
@@ -57,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchViewCode(){
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         searchView.setEllipsize(true);
+        searchView.setHint("Search hashtag for leaderboard");
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -148,14 +149,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
+        LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
 
         Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
+        final Call<HashtagsResponse> callHashtags = leaderboardApiService.getHashtags();
+
 
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ContributionsResponse>() {
             @Override
             public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
-                progressBar.setVisibility(View.INVISIBLE);
+
                 buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
                 roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
                 changesets.setText(String.valueOf(response.body().getChangeset()) );
@@ -173,6 +177,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 hashtags.setAdapter(adapter);
+
+                callHashtags.enqueue(new Callback<HashtagsResponse>() {
+                    @Override
+                    public void onResponse(Call<HashtagsResponse> call, Response<HashtagsResponse> response) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        String[] hashtagsfromserver = response.body().getHashtags();
+                        searchView.setSuggestions(hashtagsfromserver);
+                    }
+
+                    @Override
+                    public void onFailure(Call<HashtagsResponse> call, Throwable t) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
 
             @Override
