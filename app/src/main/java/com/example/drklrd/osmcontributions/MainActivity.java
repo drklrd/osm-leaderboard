@@ -2,6 +2,7 @@ package com.example.drklrd.osmcontributions;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,12 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.drklrd.osmcontributions.models.ContributionsResponse;
 import com.example.drklrd.osmcontributions.models.Leader;
 import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
 import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
 import com.example.drklrd.osmcontributions.rest.LeaderboardApiService;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +36,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
+
+
 public class MainActivity extends AppCompatActivity {
+
+    MaterialSearchView searchView;
 
     private static Retrofit retrofit = null;
     public static final String BASE_URL = "https://osm-api-explorer.herokuapp.com/";
@@ -48,73 +55,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter adapter;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
-
-        buildings = (TextView) findViewById(R.id.buildings);
-        roads = (TextView) findViewById(R.id.roads);
-        changesets = (TextView) findViewById(R.id.changeset);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        hashtags = (ListView) findViewById(R.id.hashtags);
-
-        if(retrofit == null){
-            retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-        }
-
-        ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
-
-        Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
-
-        progressBar.setVisibility(View.VISIBLE);
-        call.enqueue(new Callback<ContributionsResponse>() {
-            @Override
-            public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
-                progressBar.setVisibility(View.INVISIBLE);
-                buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
-                roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
-                changesets.setText(String.valueOf(response.body().getChangeset()) );
-                JSONObject obj = new JSONObject(response.body().getHashtags());
-
-                Iterator<String> iter = obj.keys();
-                while(iter.hasNext()){
-                    String key = iter.next();
-                    try {
-                        Object value = obj.get(key);
-                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
-                    }
-                    catch(Exception e){
-                        Log.i("Error","Error");
-                    }
-                }
-
-                hashtags.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<ContributionsResponse> call, Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Log.i("NICE",String.valueOf(t));
-            }
-        });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search,menu);
-        MenuItem item = menu.findItem(R.id.menuSearch);
-
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Search hastags for leaderboard");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    public void searchViewCode(){
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setEllipsize(true);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Retrofit retrofitleader = new Retrofit.Builder()
@@ -153,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
-
                 return false;
             }
 
@@ -162,7 +106,80 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        return super.onCreateOptionsMenu(menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(searchView.isSearchOpen()){
+            searchView.closeSearch();
+        }else{
+            super.onBackPressed();
+        }
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
+
+        buildings = (TextView) findViewById(R.id.buildings);
+        roads = (TextView) findViewById(R.id.roads);
+        changesets = (TextView) findViewById(R.id.changeset);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        hashtags = (ListView) findViewById(R.id.hashtags);
+        searchViewCode();
+
+        if(retrofit == null){
+            retrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+        }
+
+        ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
+
+        Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
+
+        progressBar.setVisibility(View.VISIBLE);
+        call.enqueue(new Callback<ContributionsResponse>() {
+            @Override
+            public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
+                roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
+                changesets.setText(String.valueOf(response.body().getChangeset()) );
+                JSONObject obj = new JSONObject(response.body().getHashtags());
+
+                Iterator<String> iter = obj.keys();
+                while(iter.hasNext()){
+                    String key = iter.next();
+                    try {
+                        Object value = obj.get(key);
+                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
+                    }
+                    catch(Exception e){
+                        Log.i("Error","Error");
+                    }
+                }
+                hashtags.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ContributionsResponse> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                Log.i("NICE",String.valueOf(t));
+            }
+        });
     }
 }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">OsmContributions</string>
+    <string-array name="query_suggestions">
+        <item>Apple</item>
+        <item>Ball</item>
+        <item>Arko apple</item>
+    </string-array>
 </resources>
