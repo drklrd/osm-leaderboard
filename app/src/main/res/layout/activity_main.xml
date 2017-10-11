@@ -7,14 +7,6 @@
     android:focusableInTouchMode="true"
     tools:context="com.example.drklrd.osmcontributions.MainActivity">
 
-    <SearchView
-
-        android:id="@+id/searchbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
-        android:queryHint="Enter tag to search the leaderboard"></SearchView>
-
     <android.support.v7.widget.CardView
         android:id="@+id/carview"
         android:layout_width="match_parent"
@@ -22,7 +14,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/searchbar"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 

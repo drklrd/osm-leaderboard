@@ -3,6 +3,9 @@ package com.example.drklrd.osmcontributions;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView changesets;
     private ProgressBar progressBar;
     private ListView hashtags;
-    private SearchView searchbar;
 
     ArrayList<String> hashes= new ArrayList<String>();
     ArrayAdapter adapter;
@@ -58,55 +60,6 @@ public class MainActivity extends AppCompatActivity {
         changesets = (TextView) findViewById(R.id.changeset);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         hashtags = (ListView) findViewById(R.id.hashtags);
-        searchbar = (SearchView) findViewById(R.id.searchbar);
-
-        searchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                Retrofit retrofitleader = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
-                Call<LeaderboardResponse> callleader = leaderboardApiService.getLeaderboard(s);
-                progressBar.setVisibility(View.VISIBLE);
-                callleader.enqueue(new Callback<LeaderboardResponse>() {
-                    @Override
-                    public void onResponse(Call<LeaderboardResponse> call, Response<LeaderboardResponse> response) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        List<Leader> leaders = response.body().getLeaders();
-                        hashes.clear();
-                        int editscount = 0;
-                        int buildingscount = 0;
-                        float roadscount = (float) 0.0;
-                        for(int i =0 ; i< leaders.size(); i++){
-                            hashes.add( (i+1) + ". " + String.valueOf(leaders.get(i).getName()) + " : " + String.valueOf(leaders.get(i).getEdits()) + " edits");
-                            editscount = editscount + leaders.get(i).getEdits();
-                            buildingscount = buildingscount + leaders.get(i).getBuildings();
-                            roadscount = roadscount + leaders.get(i).getRoads();
-                        }
-                        TextView textView1 = (TextView) findViewById(R.id.textView1);
-                        textView1.setText("Edits");
-                        changesets.setText(String.valueOf(editscount));
-                        roads.setText(String.format("%.2f",(roadscount)) + "km");
-                        buildings.setText(String.valueOf(buildingscount));
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(Call<LeaderboardResponse> call, Throwable t) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
@@ -153,4 +106,63 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search,menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Search hastags for leaderboard");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Retrofit retrofitleader = new Retrofit.Builder()
+                        .baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
+                Call<LeaderboardResponse> callleader = leaderboardApiService.getLeaderboard(query);
+                progressBar.setVisibility(View.VISIBLE);
+                callleader.enqueue(new Callback<LeaderboardResponse>() {
+                    @Override
+                    public void onResponse(Call<LeaderboardResponse> call, Response<LeaderboardResponse> response) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        List<Leader> leaders = response.body().getLeaders();
+                        hashes.clear();
+                        int editscount = 0;
+                        int buildingscount = 0;
+                        float roadscount = (float) 0.0;
+                        for(int i =0 ; i< leaders.size(); i++){
+                            hashes.add( (i+1) + ". " + String.valueOf(leaders.get(i).getName()) + " : " + String.valueOf(leaders.get(i).getEdits()) + " edits");
+                            editscount = editscount + leaders.get(i).getEdits();
+                            buildingscount = buildingscount + leaders.get(i).getBuildings();
+                            roadscount = roadscount + leaders.get(i).getRoads();
+                        }
+                        TextView textView1 = (TextView) findViewById(R.id.textView1);
+                        textView1.setText("Edits");
+                        changesets.setText(String.valueOf(editscount));
+                        roads.setText(String.format("%.2f",(roadscount)) + "km");
+                        buildings.setText(String.valueOf(buildingscount));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<LeaderboardResponse> call, Throwable t) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 }
