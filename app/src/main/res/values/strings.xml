@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OsmContributions</string>
+    <string name="app_name">OSM Leaderboard</string>
     <string-array name="query_suggestions">
         <item>Apple</item>
         <item>Ball</item>

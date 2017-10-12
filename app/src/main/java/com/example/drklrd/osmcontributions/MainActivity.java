@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                             roadscount = roadscount + leaders.get(i).getRoads();
                         }
                         TextView textView1 = (TextView) findViewById(R.id.textView1);
-                        textView1.setText("Edits");
                         changesets.setText(String.valueOf(editscount));
                         roads.setText(String.format("%.2f",(roadscount)) + "km");
                         buildings.setText(String.valueOf(buildingscount));
@@ -148,56 +147,62 @@ public class MainActivity extends AppCompatActivity {
                         .build();
         }
 
-        ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
+//        ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
         LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
 
-        Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
+//        Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
         final Call<HashtagsResponse> callHashtags = leaderboardApiService.getHashtags();
 
+        hashtags.setAdapter(adapter);
 
         progressBar.setVisibility(View.VISIBLE);
-        call.enqueue(new Callback<ContributionsResponse>() {
+
+        callHashtags.enqueue(new Callback<HashtagsResponse>() {
             @Override
-            public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
-
-                buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
-                roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
-                changesets.setText(String.valueOf(response.body().getChangeset()) );
-                JSONObject obj = new JSONObject(response.body().getHashtags());
-
-                Iterator<String> iter = obj.keys();
-                while(iter.hasNext()){
-                    String key = iter.next();
-                    try {
-                        Object value = obj.get(key);
-                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
-                    }
-                    catch(Exception e){
-                        Log.i("Error","Error");
-                    }
-                }
-                hashtags.setAdapter(adapter);
-
-                callHashtags.enqueue(new Callback<HashtagsResponse>() {
-                    @Override
-                    public void onResponse(Call<HashtagsResponse> call, Response<HashtagsResponse> response) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        String[] hashtagsfromserver = response.body().getHashtags();
-                        searchView.setSuggestions(hashtagsfromserver);
-                    }
-
-                    @Override
-                    public void onFailure(Call<HashtagsResponse> call, Throwable t) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
+            public void onResponse(Call<HashtagsResponse> call, Response<HashtagsResponse> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                String[] hashtagsfromserver = response.body().getHashtags();
+                searchView.setSuggestions(hashtagsfromserver);
             }
 
             @Override
-            public void onFailure(Call<ContributionsResponse> call, Throwable t) {
+            public void onFailure(Call<HashtagsResponse> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Log.i("NICE",String.valueOf(t));
             }
         });
+
+
+
+//        call.enqueue(new Callback<ContributionsResponse>() {
+//            @Override
+//            public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
+//
+//                buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
+//                roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
+//                changesets.setText(String.valueOf(response.body().getChangeset()) );
+//                JSONObject obj = new JSONObject(response.body().getHashtags());
+//
+//                Iterator<String> iter = obj.keys();
+//                while(iter.hasNext()){
+//                    String key = iter.next();
+//                    try {
+//                        Object value = obj.get(key);
+//                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
+//                    }
+//                    catch(Exception e){
+//                        Log.i("Error","Error");
+//                    }
+//                }
+//                hashtags.setAdapter(adapter);
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ContributionsResponse> call, Throwable t) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Log.i("NICE",String.valueOf(t));
+//            }
+//        });
     }
 }
