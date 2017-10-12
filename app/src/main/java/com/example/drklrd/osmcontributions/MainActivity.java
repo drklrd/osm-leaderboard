@@ -1,5 +1,7 @@
 package com.example.drklrd.osmcontributions;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -126,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void showAlert(String title, String message){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.show();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,11 +179,13 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 String[] hashtagsfromserver = response.body().getHashtags();
                 searchView.setSuggestions(hashtagsfromserver);
+                showAlert("Search leaderboard","Enter hashtag in searchbar to get the leaderboard");
             }
 
             @Override
             public void onFailure(Call<HashtagsResponse> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
+                showAlert("Error","There was an error fetching search tags");
             }
         });
 

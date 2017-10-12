@@ -147,14 +147,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
-
+                android:visibility="invisible"
                 android:id="@+id/progressBar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="153dp"
                 android:layout_marginStart="153dp"
                 android:layout_marginTop="152dp"
-                android:visibility="invisible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
