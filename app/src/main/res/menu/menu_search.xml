@@ -9,4 +9,6 @@
         android:title="Search hashtag for leaderboard"
         app:showAsAction="always" />
 
+    <item android:id="@+id/about" android:title="About" />
+
 </menu>

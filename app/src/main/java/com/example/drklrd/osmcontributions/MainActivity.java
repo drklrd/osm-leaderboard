@@ -1,6 +1,8 @@
 package com.example.drklrd.osmcontributions;
 
 import android.content.DialogInterface;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> hashes= new ArrayList<String>();
     ArrayAdapter adapter;
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
 
     public void searchViewCode(){
@@ -147,6 +152,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
 
         buildings = (TextView) findViewById(R.id.buildings);
@@ -222,5 +233,13 @@ public class MainActivity extends AppCompatActivity {
 //                Log.i("NICE",String.valueOf(t));
 //            }
 //        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
