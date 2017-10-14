@@ -6,9 +6,11 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_action_search"
         android:orderInCategory="100"
-        android:title="Search hashtag for leaderboard"
+        android:title="Search leaderboard"
         app:showAsAction="always" />
 
-    <item android:id="@+id/about" android:title="About" />
+    <item android:id="@+id/about"
+        android:icon="@drawable/info"
+        android:title="About" />
 
 </menu>

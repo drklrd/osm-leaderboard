@@ -263,9 +263,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.about:
-                Toast.makeText(getApplicationContext(),"About !",Toast.LENGTH_SHORT).show();
-                Intent aboutIntent = new Intent(this,About.class);
-                startActivity(aboutIntent);
+                    showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger.");
+//                  Toast.makeText(getApplicationContext(),"About !",Toast.LENGTH_SHORT).show();
+//                  Intent aboutIntent = new Intent(this,About.class);
+//                  startActivity(aboutIntent);
                 break;
             default:
 
