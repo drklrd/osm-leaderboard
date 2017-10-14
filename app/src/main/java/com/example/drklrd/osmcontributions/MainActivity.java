@@ -1,7 +1,6 @@
 package com.example.drklrd.osmcontributions;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,42 +9,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.widget.SearchView;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.drklrd.osmcontributions.models.ContributionsResponse;
 import com.example.drklrd.osmcontributions.models.HashtagsResponse;
 import com.example.drklrd.osmcontributions.models.Leader;
 import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
-import com.example.drklrd.osmcontributions.rest.ContributionsApiService;
 import com.example.drklrd.osmcontributions.rest.LeaderboardApiService;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-
-
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -71,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void searchViewCode(){
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setEllipsize(true);
+
         searchView.setHint("Search hashtag for leaderboard");
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -166,8 +149,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
         adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
 
         buildings = (TextView) findViewById(R.id.buildings);
@@ -184,14 +165,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .build();
         }
 
-//        ContributionsApiService contributionsApiService = retrofit.create(ContributionsApiService.class);
         LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
-
-//        Call<ContributionsResponse> call = contributionsApiService.getUserContributions();
         final Call<HashtagsResponse> callHashtags = leaderboardApiService.getHashtags();
 
         hashtags.setAdapter(adapter);
-
         progressBar.setVisibility(View.VISIBLE);
 
         callHashtags.enqueue(new Callback<HashtagsResponse>() {
@@ -209,40 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showAlert("Error","There was an error fetching search tags");
             }
         });
-
-
-
-//        call.enqueue(new Callback<ContributionsResponse>() {
-//            @Override
-//            public void onResponse(Call<ContributionsResponse> call, Response<ContributionsResponse> response) {
-//
-//                buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
-//                roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
-//                changesets.setText(String.valueOf(response.body().getChangeset()) );
-//                JSONObject obj = new JSONObject(response.body().getHashtags());
-//
-//                Iterator<String> iter = obj.keys();
-//                while(iter.hasNext()){
-//                    String key = iter.next();
-//                    try {
-//                        Object value = obj.get(key);
-//                        hashes.add(String.valueOf(key) + " : " + String.valueOf(value));
-//                    }
-//                    catch(Exception e){
-//                        Log.i("Error","Error");
-//                    }
-//                }
-//                hashtags.setAdapter(adapter);
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ContributionsResponse> call, Throwable t) {
-//                progressBar.setVisibility(View.INVISIBLE);
-//                Log.i("NICE",String.valueOf(t));
-//            }
-//        });
     }
 
     @Override
@@ -253,9 +196,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -263,13 +203,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.about:
-                    showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger.");
-//                  Toast.makeText(getApplicationContext(),"About !",Toast.LENGTH_SHORT).show();
-//                  Intent aboutIntent = new Intent(this,About.class);
-//                  startActivity(aboutIntent);
+                    showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger. The data is fetched as in missingmaps.org");
                 break;
             default:
-
+                searchView.showSearch();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
