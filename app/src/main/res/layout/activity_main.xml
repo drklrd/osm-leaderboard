@@ -41,7 +41,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="213dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -161,7 +161,9 @@
                     android:layout_below="@+id/textView3"
                     android:layout_marginEnd="14dp"
                     android:layout_marginRight="14dp"
+                    android:indeterminate="true"
                     android:visibility="invisible"
+                    android:indeterminateDrawable="@drawable/progress"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

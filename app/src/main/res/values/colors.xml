@@ -3,4 +3,6 @@
     <color name="colorPrimary">#d35400</color>
     <color name="colorPrimaryDark">#e67e22</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="progressBarStart">#e67e22</color>
+    <color name="progressBarEnd">#d35400</color>
 </resources>

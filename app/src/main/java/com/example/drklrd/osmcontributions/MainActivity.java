@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
+    private  TextView textViewHeader;
+
+
+
 
     public void searchViewCode(){
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setHint("Search hashtag for leaderboard");
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(final String query) {
                 Retrofit retrofitleader = new Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
@@ -81,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             buildingscount = buildingscount + leaders.get(i).getBuildings();
                             roadscount = roadscount + leaders.get(i).getRoads();
                         }
+
+                        textViewHeader.setText("Showing leaderboard for #"+query);
+                        hashtags.removeHeaderView(textViewHeader);
+                        hashtags.addHeaderView(textViewHeader);
+
                         TextView textView1 = (TextView) findViewById(R.id.textView1);
                         changesets.setText(String.valueOf(editscount));
                         roads.setText(String.format("%.2f",(roadscount)) + "km");
@@ -140,6 +149,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer);
 
+        textViewHeader = new TextView(MainActivity.this);
+
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(toggle);
@@ -168,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
         final Call<HashtagsResponse> callHashtags = leaderboardApiService.getHashtags();
 
+
         hashtags.setAdapter(adapter);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -193,8 +206,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(toggle.onOptionsItemSelected(item)){
             return true;
         }
+
+        switch (item.getItemId()){
+            case R.id.about:
+                showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger. The data is fetched from API used by missingmaps.org");
+                break;
+            default:
+
+        }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
