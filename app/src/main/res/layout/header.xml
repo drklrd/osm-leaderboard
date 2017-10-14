@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="160dp"
     android:background="@drawable/osm"
+    android:gravity="bottom"
     >
 
 </LinearLayout>

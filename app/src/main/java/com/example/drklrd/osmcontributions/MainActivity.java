@@ -1,6 +1,7 @@
 package com.example.drklrd.osmcontributions;
 
 import android.content.DialogInterface;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> hashes= new ArrayList<String>();
     ArrayAdapter adapter;
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
 
 
     public void searchViewCode(){
@@ -150,13 +151,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.navigation_drawer);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+
 
         adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,hashes);
 
@@ -237,9 +242,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
+        if(toggle.onOptionsItemSelected(item)){
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
