@@ -1,6 +1,7 @@
 package com.example.drklrd.osmcontributions;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -263,6 +264,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.about:
                 Toast.makeText(getApplicationContext(),"About !",Toast.LENGTH_SHORT).show();
+                Intent aboutIntent = new Intent(this,About.class);
+                startActivity(aboutIntent);
                 break;
             default:
 
