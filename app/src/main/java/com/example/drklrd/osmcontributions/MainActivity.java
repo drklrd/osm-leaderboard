@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.about:
-                    showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger. The data is fetched as in missingmaps.org");
+                    showAlert("About","This app is useful to get the leaderboard for hashtag based mapping on HOT tasking manger. The data is fetched from API used by missingmaps.org");
                 break;
             default:
                 searchView.showSearch();
