@@ -11,6 +11,7 @@ import com.example.drklrd.osmcontributions.models.ContributionsResponse;
 
 public interface ContributionsApiService {
 
-    @GET("api/v1/stats/5084910")
-    Call<ContributionsResponse> getUserContributions();
+    @GET("api/v1/stats/{id}")
+    Call<ContributionsResponse> getUserContributions(@Path("id") String id);
 }
+

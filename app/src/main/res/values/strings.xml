@@ -7,4 +7,5 @@
     </string-array>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="baseUrl">https://osm-api-explorer.herokuapp.com/</string>
 </resources>

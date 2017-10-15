@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.drklrd.osmcontributions.models.HashtagsResponse;
 import com.example.drklrd.osmcontributions.models.Leader;
 import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
+import com.example.drklrd.osmcontributions.rest.ApiHelper;
 import com.example.drklrd.osmcontributions.rest.LeaderboardApiService;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MaterialSearchView searchView;
 
     private static Retrofit retrofit = null;
-    public static final String BASE_URL = "https://osm-api-explorer.herokuapp.com/";
 
     private TextView buildings;
     private TextView roads;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextSubmit(final String query) {
                 Retrofit retrofitleader = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
+                        .baseUrl(ApiHelper.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
@@ -178,8 +178,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         hashtags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this,String.valueOf(leaders.get(i-1).getName()),Toast.LENGTH_SHORT).show();
                 Intent profileIntent = new Intent(MainActivity.this,Profile.class);
+                profileIntent.putExtra("user",String.valueOf(leaders.get(i-1).getName()));
                 startActivity(profileIntent);
             }
         });
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
+                        .baseUrl(ApiHelper.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
         }
