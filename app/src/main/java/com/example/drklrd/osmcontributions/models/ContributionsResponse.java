@@ -20,6 +20,9 @@ public class ContributionsResponse {
     @SerializedName("changeset_count")
     private int changeset;
 
+    @SerializedName("name")
+    private String name;
+
     @SerializedName("hashtags")
     private Map<String,String> hashtags;
 
@@ -55,4 +58,11 @@ public class ContributionsResponse {
         this.hashtags = hashtags;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
 }

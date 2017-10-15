@@ -29,6 +29,7 @@ public class Profile extends AppCompatActivity {
     private TextView buildings;
     private TextView roads;
     private TextView changesets;
+    private TextView user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class Profile extends AppCompatActivity {
         buildings = (TextView) findViewById(R.id.buildings);
         roads = (TextView) findViewById(R.id.roads);
         changesets = (TextView) findViewById(R.id.changeset);
+        user = (TextView) findViewById(R.id.user);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -58,6 +60,7 @@ public class Profile extends AppCompatActivity {
                 buildings.setText(String.valueOf(response.body().getTotalBuildingCount()));
                 roads.setText(String.format("%.2f",(response.body().getTotalRoad())) + "km");
                 changesets.setText(String.valueOf(response.body().getChangeset()));
+                user.setText(String.valueOf(response.body().getName()));
             }
 
             @Override
