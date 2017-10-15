@@ -1,6 +1,7 @@
 package com.example.drklrd.osmcontributions;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -178,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(MainActivity.this,String.valueOf(leaders.get(i-1).getName()),Toast.LENGTH_SHORT).show();
+                Intent profileIntent = new Intent(MainActivity.this,Profile.class);
+                startActivity(profileIntent);
             }
         });
 
