@@ -12,10 +12,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.drklrd.osmcontributions.models.HashtagsResponse;
 import com.example.drklrd.osmcontributions.models.Leader;
 import com.example.drklrd.osmcontributions.models.LeaderboardResponse;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
 
     private  TextView textViewHeader;
+    private String[] hashtagsfromserver;
+    private  List<Leader> leaders;
 
 
 
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onResponse(Call<LeaderboardResponse> call, Response<LeaderboardResponse> response) {
                         progressBar.setVisibility(View.INVISIBLE);
-                        List<Leader> leaders = response.body().getLeaders();
+                        leaders = response.body().getLeaders();
                         hashes.clear();
                         int editscount = 0;
                         int buildingscount = 0;
@@ -168,6 +173,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         changesets = (TextView) findViewById(R.id.changeset);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         hashtags = (ListView) findViewById(R.id.hashtags);
+
+        hashtags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this,String.valueOf(leaders.get(i-1).getName()),Toast.LENGTH_SHORT).show();
+            }
+        });
+
         searchViewCode();
 
         if(retrofit == null){
@@ -188,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<HashtagsResponse> call, Response<HashtagsResponse> response) {
                 progressBar.setVisibility(View.INVISIBLE);
-                String[] hashtagsfromserver = response.body().getHashtags();
+                hashtagsfromserver = response.body().getHashtags();
                 searchView.setSuggestions(hashtagsfromserver);
                 showAlert("Search leaderboard","Enter hashtag in searchbar to get the leaderboard");
             }
