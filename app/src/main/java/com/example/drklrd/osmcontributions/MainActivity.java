@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import com.example.drklrd.osmcontributions.rest.LeaderboardApiService;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String[] hashtagsfromserver;
     private  List<Leader> leaders;
 
-
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public void searchViewCode(){
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -157,6 +159,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         textViewHeader = new TextView(MainActivity.this);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.swipe_1,R.color.swipe_2,R.color.swipe_3);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        getHashtags();
+                    }
+                }, 3000);
+
+            }
+        });
+
+        swipeRefreshLayout.setEnabled(false);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
@@ -185,12 +204,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         searchViewCode();
+        getHashtags();
 
+    }
+
+    public void getHashtags(){
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                        .baseUrl(ApiHelper.BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                    .baseUrl(ApiHelper.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
         }
 
         LeaderboardApiService leaderboardApiService = retrofit.create(LeaderboardApiService.class);
@@ -212,7 +235,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onFailure(Call<HashtagsResponse> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                showAlert("Error","There was an error fetching search tags");
+                showAlert("Error","There was an error fetching search tags. Also make sure you are connected to internet");
+                swipeRefreshLayout.setEnabled(true);
             }
         });
     }

@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="progressBarStart">#e67e22</color>
     <color name="progressBarEnd">#d35400</color>
+
+    <color name="swipe_1">#4759ff</color>
+    <color name="swipe_2">#abbe00</color>
+    <color name="swipe_3">#69008138</color>
 </resources>

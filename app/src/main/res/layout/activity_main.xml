@@ -1,192 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.SwipeRefreshLayout android:layout_height="wrap_content"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:id="@+id/drawer"
-    tools:context="com.example.drklrd.osmcontributions.MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:elevation="50dp"
-        android:id="@+id/toolbar_container"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:id="@+id/drawer"
+        tools:context="com.example.drklrd.osmcontributions.MainActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
+            android:elevation="50dp"
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            />
+            android:layout_height="match_parent">
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/carview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
-            android:visibility="visible">
-
-
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="213dp">
+                android:layout_height="?attr/actionBarSize"
+                />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="44dp"
-                    android:layout_marginStart="44dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/pets"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-
-                    android:id="@+id/textView1"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="110dp"
-                    android:layout_marginStart="110dp"
-                    android:layout_marginTop="16dp"
-                    android:padding="10dp"
-                    android:text="Edits"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
 
-                <TextView
-                    android:id="@+id/changeset"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="232dp"
-                    android:layout_marginStart="232dp"
-                    android:layout_marginTop="16dp"
-                    android:padding="10dp"
-                    android:text="..."
-                    android:textColor="#3498db"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="44dp"
-                    android:layout_marginStart="44dp"
-                    android:layout_marginTop="64dp"
-                    android:background="@drawable/home"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="110dp"
-                    android:layout_marginStart="110dp"
-                    android:layout_marginTop="64dp"
-                    android:padding="10dp"
-                    android:text="Buildings"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/buildings"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="232dp"
-                    android:layout_marginStart="232dp"
-                    android:layout_marginTop="64dp"
-                    android:padding="10dp"
-                    android:text="..."
-                    android:textColor="#3498db"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="44dp"
-                    android:layout_marginStart="44dp"
-                    android:layout_marginTop="117dp"
-                    android:background="@drawable/timeline"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="110dp"
-                    android:layout_marginStart="110dp"
-                    android:layout_marginTop="117dp"
-                    android:padding="10dp"
-                    android:text="Roads"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/roads"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="232dp"
-                    android:layout_marginStart="232dp"
-                    android:layout_marginTop="116dp"
-                    android:padding="10dp"
-                    android:text="..."
-                    android:textColor="#3498db"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignEnd="@+id/textView3"
-                    android:layout_alignRight="@+id/textView3"
-                    android:layout_below="@+id/textView3"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginRight="14dp"
-                    android:indeterminate="true"
-                    android:visibility="invisible"
-                    android:indeterminateDrawable="@drawable/progress"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <ListView
-            android:elevation="51dp"
-            android:id="@+id/hashtags"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="21dp"
-            android:padding="10dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_below="@+id/carview"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="wrap_content">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/carview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:visibility="visible">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="213dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/pets"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+
+                        android:id="@+id/textView1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="110dp"
+                        android:layout_marginStart="110dp"
+                        android:layout_marginTop="16dp"
+                        android:padding="10dp"
+                        android:text="Edits"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/changeset"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="232dp"
+                        android:layout_marginStart="232dp"
+                        android:layout_marginTop="16dp"
+                        android:padding="10dp"
+                        android:text="..."
+                        android:textColor="#3498db"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="64dp"
+                        android:background="@drawable/home"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="110dp"
+                        android:layout_marginStart="110dp"
+                        android:layout_marginTop="64dp"
+                        android:padding="10dp"
+                        android:text="Buildings"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/buildings"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="232dp"
+                        android:layout_marginStart="232dp"
+                        android:layout_marginTop="64dp"
+                        android:padding="10dp"
+                        android:text="..."
+                        android:textColor="#3498db"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="44dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="117dp"
+                        android:background="@drawable/timeline"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="110dp"
+                        android:layout_marginStart="110dp"
+                        android:layout_marginTop="117dp"
+                        android:padding="10dp"
+                        android:text="Roads"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/roads"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="232dp"
+                        android:layout_marginStart="232dp"
+                        android:layout_marginTop="116dp"
+                        android:padding="10dp"
+                        android:text="..."
+                        android:textColor="#3498db"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignEnd="@+id/textView3"
+                        android:layout_alignRight="@+id/textView3"
+                        android:layout_below="@+id/textView3"
+                        android:layout_marginEnd="14dp"
+                        android:layout_marginRight="14dp"
+                        android:indeterminate="true"
+                        android:visibility="invisible"
+                        android:indeterminateDrawable="@drawable/progress"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <ListView
+                android:elevation="51dp"
+                android:id="@+id/hashtags"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="21dp"
+                android:padding="10dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_below="@+id/carview"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
 
-
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
